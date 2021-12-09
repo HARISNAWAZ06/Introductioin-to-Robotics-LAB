@@ -1,0 +1,67 @@
+import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
+import random
+from time import sleep#Import the sleep function from the time module 
+
+GPIO.setwarnings(False)# ignore warning for now
+ 
+GPIO.setmode(GPIO.BOARD)# use physical pin numbering
+
+GPIO.setup(10,GPIO.OUT,initial=GPIO.LOW)# set pin 12 to be an output pin and set initial value to low (OFF)
+GPIO.setup(12,GPIO.OUT,initial=GPIO.LOW)# set pin 12 to be an output pin and set initial value to low (OFF)
+GPIO.setup(22,GPIO.OUT,initial=GPIO.LOW)# set pin 12 to be an output pin and set initial value to low (OFF)
+GPIO.setup(16,GPIO.OUT,initial=GPIO.LOW)# set pin 12 to be an output pin and set initial value to low (OFF)
+
+GPIO.setup(32,GPIO.OUT,initial=GPIO.LOW)# set pin 12 to be an output pin and set initial value to low (OFF)
+GPIO.setup(33,GPIO.OUT,initial=GPIO.LOW)# set pin 12 to be an output pin and set initial value to low (OFF)
+
+
+El = GPIO.PWM(32, 100) # PWM
+Er = GPIO.PWM(33, 100) # PWM
+
+El.start(0)
+Er.start(0)
+#p.start(100) #Generate PWM signal with 0% duty cycle
+
+
+while True:#Run  forever
+
+    #Drive Farword for 5 seconds at full speed
+    El.ChangeDutyCycle(100)
+    Er.ChangeDutyCycle(100)
+    GPIO.output(10, GPIO.HIGH);
+    GPIO.output(12, GPIO.LOW);
+    GPIO.output(22, GPIO.HIGH); #Left Wheel
+    GPIO.output(16, GPIO.LOW);  #Left Wheel
+    sleep(2)
+    
+    num = random.randint(0,9)
+    print(num)
+    
+    #Random Right AXIAL
+    if num<=5:
+        print('Random RIGHT')
+        
+        El.ChangeDutyCycle(30)
+        Er.ChangeDutyCycle(30)
+        
+        GPIO.output(22, GPIO.HIGH); #Left Wheel
+        GPIO.output(16, GPIO.LOW); #Left Wheel
+        GPIO.output(10, GPIO.LOW); #Right Wheel
+        GPIO.output(12, GPIO.HIGH); #Right Wheel
+
+        sleep(2)        
+    
+    #Random Left AXIAL   
+    if num>=6:
+        print('Random LEFT')
+
+        Er.ChangeDutyCycle(30)
+        El.ChangeDutyCycle(30)
+        
+        GPIO.output(22, GPIO.LOW); #Left Wheel
+        GPIO.output(16, GPIO.HIGH); #Left Wheel
+        GPIO.output(10, GPIO.HIGH); #Right Wheel
+        GPIO.output(12, GPIO.LOW); #Right Wheel
+
+        sleep(2)
+   
